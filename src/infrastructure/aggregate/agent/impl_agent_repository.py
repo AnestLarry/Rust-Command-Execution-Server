@@ -4,8 +4,8 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime, timezone
 from domain.aggregate.agent.agent_repository import AgentRepository
 # Assuming SQLiteRepository and CloudflareKVRepo are available and have necessary methods
-from infrastructure.database.impl_sqlite_repository import SQLiteRepository
-from infrastructure.cloudflare_kv.impl_cloudflare_kv_repository import CloudflareKVRepo
+from src.infrastructure.database.impl_sqlite_repository import SqliteRepository
+from src.infrastructure.cloudflare_kv.impl_cloudflare_kv_repository import CloudflareKvRepository
 from src.config import Settings # Import settings
 
 # Helper to convert datetime to ISO format string for KV
@@ -19,7 +19,7 @@ def iso_to_datetime(iso_str: str) -> datetime:
     return datetime.fromisoformat(iso_str.replace('Z', '+00:00'))
 
 class AgentRepositoryImpl(AgentRepository):
-    def __init__(self, db_repo: SQLiteRepository, kv_repo: CloudflareKVRepo, settings: Settings):
+    def __init__(self, db_repo: SqliteRepository, kv_repo: CloudflareKvRepository, settings: Settings):
         self.db = db_repo # SQLite repository instance
         self.kv = kv_repo # Cloudflare KV repository instance
         self.settings = settings # Application settings

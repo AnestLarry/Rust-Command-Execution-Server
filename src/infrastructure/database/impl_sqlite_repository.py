@@ -1,4 +1,4 @@
-from ...domain.db.repository.sql_repository import SQLDatabaseMethod
+from src.domain.db.repository.sql_repository import SQLDatabaseMethod
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from typing import Any, Optional, Dict, List

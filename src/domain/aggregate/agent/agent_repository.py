@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 from datetime import datetime
-from ...db.repository import AsyncRepository
+from ...db.repository.async_repository import AsyncRepository
+
 
 class AgentRepository(AsyncRepository, ABC):
     @abstractmethod
@@ -13,10 +14,19 @@ class AgentRepository(AsyncRepository, ABC):
         pass
 
     @abstractmethod
-    async def store_log(self, task_id: str, agent_id: str, exit_code: int,
-                      stdout: str, stderr: str, exec_time_ms: int) -> None:
+    async def store_log(
+        self,
+        task_id: str,
+        agent_id: str,
+        exit_code: int,
+        stdout: str,
+        stderr: str,
+        exec_time_ms: int,
+    ) -> None:
         pass
 
     @abstractmethod
-    async def get_pending_tasks_for_agent(self, agent_id: str, since: datetime) -> list[dict]:
+    async def get_pending_tasks_for_agent(
+        self, agent_id: str, since: datetime
+    ) -> list[dict]:
         pass
