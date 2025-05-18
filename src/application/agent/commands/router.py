@@ -1,11 +1,9 @@
 from datetime import datetime
-
+from typing import Annotated
 from fastapi import APIRouter, Depends, Query
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.infrastructure.database.engine import get_session
-from .dto import FetchTasksResponse  # Import necessary DTO
-from .handler import fetch_commands_handler  # Import handler
+from ..dependencies import DependenciesFactory
+from .dto import FetchTasksResponse
+from .interfaces import CommandsHandlerInterface
 
 router = APIRouter()
 
@@ -13,7 +11,7 @@ router = APIRouter()
 async def fetch_commands(
     agent_id: str = Query(..., description="Agent identifier"),
     since: datetime = Query(None, description="Filter commands since this timestamp"),
-    session: AsyncSession = Depends(get_session)
+    handler: CommandsHandlerInterface = Depends(DependenciesFactory.get_commands_handler)
 ):
     """Fetch pending commands for the specified agent."""
-    return await fetch_commands_handler(agent_id, since, session)
+    return await handler.fetch_commands(agent_id, since)

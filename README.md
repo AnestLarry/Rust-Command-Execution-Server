@@ -57,11 +57,28 @@ Upload execution logs from an agent
 uv pip install -e .
 ```
 
-2. Configure environment variables in `.env`:
-```ini
-DB_ENGINE=sqlite|postgres
-DB_URL=your_database_url
-```
+2. Configure environment variables. Copy one of the example files (`.env.sqlite.example` or `.env.cfkv.example`) to `.env` and update the values.
+
+   - `DB_ENGINE`: Specifies the database engine. Use `sqlite` for SQLite or `cloudflare_kv` for Cloudflare KV.
+   - `DB_URL`: Database connection URL (required for `sqlite`).
+   - Cloudflare KV settings (`CF_ACCOUNT_ID`, `CF_KV_NAMESPACE_ID`, `CF_API_TOKEN`) are required when `DB_ENGINE` is `cloudflare_kv`.
+   - `CORS_ORIGINS`: List of allowed CORS origins.
+
+   Example `.env` for SQLite:
+   ```ini
+   DB_ENGINE=sqlite
+   DB_URL=sqlite:///./rces.db
+   CORS_ORIGINS=["*"]
+   ```
+
+   Example `.env` for Cloudflare KV:
+   ```ini
+   DB_ENGINE=cloudflare_kv
+   CF_ACCOUNT_ID=your_cloudflare_account_id
+   CF_KV_NAMESPACE_ID=your_cloudflare_kv_namespace_id
+   CF_API_TOKEN=your_cloudflare_api_token
+   CORS_ORIGINS=["*"]
+   ```
 
 3. Run the server:
 ```bash

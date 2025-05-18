@@ -1,15 +1,16 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from ...infrastructure.database.engine import get_session
-from .dto import LogPayload # Import necessary DTO
-from .handler import upload_logs_handler # Import handler
+
+from application.agent.logs.handler import LogsHandlerInterface
+
+from ..dependencies import DependenciesFactory
+from .dto import LogPayload
 
 router = APIRouter()
 
 @router.post("/logs")
 async def upload_logs(
     payload: LogPayload,
-    session: AsyncSession = Depends(get_session)
+    handler: LogsHandlerInterface = Depends(DependenciesFactory.get_logs_handler)
 ):
     """Upload execution logs from an agent."""
-    return await upload_logs_handler(payload, session)
+    return await handler.upload_logs(payload)
